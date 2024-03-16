@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+api:
+  client:
+    bacen:
+      url: http://bacenUrl.test.com/
+    eq3:
+      url: http://eq3Url.test.com/
+      inquilino: bbb7ada5-aea9-4534-800a-0f17589b2e29
+
+resilience4j.circuitbreaker:
+  instances:
+    integrationFallBack:
+      slidingWindowSize: 100
+      minimumNumberOfCalls: 50
+      waitDurationInOpenState: 5s
+
+
+sts:
+  token-generation:
+    client-id: ${CLIENT_ID}
+    client-secret: ${CLIENT_SECRET}
+
+feature-toggle:
+  eq3:
+    mock: true
+  cc:
+    mock: true
+  bacen:
+    mock: true
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+resilience4j:
+  retry:
+    instances:
+      notificaBacen:
+        maxRetryAttempts: 3
+        waitDuration: 5s
