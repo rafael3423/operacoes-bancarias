@@ -61,15 +61,6 @@ public class ControllerExcpetionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.PROCESSING)
                 .body(body);
     }
-    @ExceptionHandler(CallBackException.class)
-    public ResponseEntity<ExceptionResponseDto> handleCallBack(CallBackException e) {
-        var body = new ExceptionResponseDto(HttpStatus.PROCESSING.value(),
-                e.getMessage(),
-                CodigoErroInterno.ERRO_DEPENCIA_EXTERNA.getCode());
-
-        return ResponseEntity.status(HttpStatus.PROCESSING)
-                .body(body);
-    }
     @ExceptionHandler(FallBackException.class)
     public ResponseEntity<ExceptionResponseDto> handleFallBack(FallBackException e) {
         var body = new ExceptionResponseDto(HttpStatus.SERVICE_UNAVAILABLE.value(),

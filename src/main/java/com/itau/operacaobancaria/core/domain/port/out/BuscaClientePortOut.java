@@ -1,10 +1,9 @@
 package com.itau.operacaobancaria.core.domain.port.out;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itau.operacaobancaria.core.domain.model.Cliente;
 
-public interface BuscaClientePorOut {
+public interface BuscaClientePortOut {
     Cliente buscaCliente(String idCliente);
 
 }

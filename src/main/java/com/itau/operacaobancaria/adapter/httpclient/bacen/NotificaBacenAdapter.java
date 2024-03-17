@@ -1,23 +1,14 @@
 package com.itau.operacaobancaria.adapter.httpclient.bacen;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itau.operacaobancaria.adapter.httpclient.converter.ObjectMapperConverter;
 import com.itau.operacaobancaria.adapter.infra.seguranca.StsTokenImpl;
 import com.itau.operacaobancaria.core.domain.mapper.BacenMapper;
-import com.itau.operacaobancaria.core.domain.model.Bacen;
-import com.itau.operacaobancaria.core.domain.model.Transferencia;
 import com.itau.operacaobancaria.core.domain.port.out.NotificaBacenPortOut;
-import com.itau.operacaobancaria.core.domain.port.out.TransferenciaCallBackPotOut;
-import com.itau.operacaobancaria.core.domain.usecase.transferencia.exception.CallBackException;
 import com.itau.operacaobancaria.core.domain.usecase.transferencia.exception.FallBackException;
 import com.itau.operacaobancaria.core.domain.usecase.transferencia.exception.NotificacaoBacenException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -69,8 +60,11 @@ public class NotificaBacenAdapter implements NotificaBacenPortOut {
             throw e;
         }
     }
+
+
     void retornaMensagemFallBack() {
         log.error("Muitas falhas para notificar bacen sobre transferência, desativando transação para API por 5 segundos.");
         throw new FallBackException("API temporariamente indisponível..");
     }
+
 }

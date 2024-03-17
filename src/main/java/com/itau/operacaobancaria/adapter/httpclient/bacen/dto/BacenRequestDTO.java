@@ -1,13 +1,15 @@
 package com.itau.operacaobancaria.adapter.httpclient.bacen.dto;
 
 import lombok.Data;
+import lombok.Getter;
 
 @Data
+@Getter
 public class BacenRequestDTO {
 
-    String idCliente;
-    String cpfOrigem;
-    String valorTransferencia;
-    String codigoChavePixDestino;
-    String dataHoraTransferencia;
+    public String idCliente;
+    public String cpfOrigem;
+    public String valorTransferencia;
+    public String codigoChavePixDestino;
+    public String dataHoraTransferencia;
 }

@@ -9,11 +9,10 @@ import com.itau.operacaobancaria.core.domain.model.Cliente;
 import com.itau.operacaobancaria.core.domain.model.ContaCorrente;
 import com.itau.operacaobancaria.core.domain.model.Transferencia;
 import com.itau.operacaobancaria.core.domain.port.in.TransferenciaPortIn;
-import com.itau.operacaobancaria.core.domain.port.out.BuscaClientePorOut;
+import com.itau.operacaobancaria.core.domain.port.out.BuscaClientePortOut;
 import com.itau.operacaobancaria.core.domain.port.out.ContaCorrentePortOut;
 import com.itau.operacaobancaria.core.domain.port.out.NotificaBacenPortOut;
 import com.itau.operacaobancaria.core.domain.port.out.TransferenciaCallBackPotOut;
-import com.itau.operacaobancaria.core.domain.usecase.transferencia.exception.CallBackException;
 import com.itau.operacaobancaria.core.domain.usecase.transferencia.exception.NotificacaoBacenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class TransferirUsecase implements TransferenciaPortIn {
 
     private final ContaCorrentePortOut contaCorrentePortOut;
-    private final BuscaClientePorOut buscaClientePorOut;
+    private final BuscaClientePortOut buscaClientePortOut;
     private final NotificaBacenPortOut notificaBacenPortOut;
     private final TransferenciaMapper transferenciaMapper;
     private final BacenMapper bacenMapper;
@@ -35,7 +34,7 @@ public class TransferirUsecase implements TransferenciaPortIn {
     public TransferenciaResponseDTO execute(Transferencia transferencia) throws InterruptedException, JsonProcessingException {
 
         // Busca cliente
-        Cliente cliente = buscaClientePorOut.buscaCliente(transferencia.getIdCliente());
+        Cliente cliente = buscaClientePortOut.buscaCliente(transferencia.getIdCliente());
 
         // consulta saldo do cliente, valida se valor da transferencia é maior que saldo e
         // que valor limite diário, redefine limite diário se a ultima transferencia for
@@ -44,7 +43,7 @@ public class TransferirUsecase implements TransferenciaPortIn {
 
         contaCorrente.validarContaInativaOuInexistente(transferencia.getIdConta());
         contaCorrente.redefinirLimiteDiario();
-        contaCorrente.validarLimites(transferencia.getValorTransferencia(), transferencia);
+        contaCorrente.validarLimites(transferencia);
 
         try {
             // Notifica Bacen sobre transferência e tenta 3x caso retorne 429
@@ -58,5 +57,6 @@ public class TransferirUsecase implements TransferenciaPortIn {
 
         return transferenciaMapper.toSaida(transferencia, contaCorrente, cliente);
     }
+
 
 }

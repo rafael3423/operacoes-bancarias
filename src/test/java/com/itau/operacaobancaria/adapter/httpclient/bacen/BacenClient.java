@@ -1,7 +1,7 @@
 package com.itau.operacaobancaria.adapter.httpclient.bacen;
 
 import com.itau.operacaobancaria.adapter.httpclient.bacen.dto.BacenRequestDTO;
-import com.itau.operacaobancaria.adapter.httpclient.bacen.dto.BacenResponseDTO;
+import com.itau.operacaobancaria.adapter.httpclient.bacen.dto.BacenResponseDTOTest;
 import com.itau.operacaobancaria.adapter.httpclient.feign.FeignConverterConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,7 +24,7 @@ import java.util.UUID;
 public interface BacenClient {
 
     @GetMapping
-    ResponseEntity<BacenResponseDTO> notificarBacen(
+    ResponseEntity<BacenResponseDTOTest> notificarBacen(
             @RequestHeader(value = "Authorization") String authorization,
             @RequestHeader(value = "X-itau-apiKey") String xItauApiKey,
             @RequestHeader(value = "X-itau-correlationId") String correlationId,
@@ -40,8 +40,8 @@ public interface BacenClient {
 class BacenClientMock implements BacenClient {
 
     @Override
-    public ResponseEntity<BacenResponseDTO> notificarBacen(String authorization, String xItauApiKey, String correlationId, String flowID, BacenRequestDTO bacenRequestDTO) {
-        var bacenResponse = BacenResponseDTO.builder()
+    public ResponseEntity<BacenResponseDTOTest> notificarBacen(String authorization, String xItauApiKey, String correlationId, String flowID, BacenRequestDTO bacenRequestDTO) {
+        var bacenResponse = BacenResponseDTOTest.builder()
                 .chavePixDestino(UUID.randomUUID().toString())
                 .cpfCliente("34879027880")
                 .dataHoraNotificacao(LocalDateTime.now().toString())

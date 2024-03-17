@@ -1,12 +1,10 @@
 package com.itau.operacaobancaria.adapter.httpclient.cliente;
 
-import com.itau.operacaobancaria.adapter.httpclient.cliente.dto.EQ3ResponseDTO;
 import com.itau.operacaobancaria.adapter.httpclient.converter.ObjectMapperConverter;
 import com.itau.operacaobancaria.adapter.infra.seguranca.StsTokenImpl;
 import com.itau.operacaobancaria.core.domain.mapper.EQ3Mapper;
 import com.itau.operacaobancaria.core.domain.model.Cliente;
-import com.itau.operacaobancaria.core.domain.model.Transferencia;
-import com.itau.operacaobancaria.core.domain.port.out.BuscaClientePorOut;
+import com.itau.operacaobancaria.core.domain.port.out.BuscaClientePortOut;
 import com.itau.operacaobancaria.core.domain.usecase.transferencia.exception.FallBackException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,7 +17,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ClienteAdapter implements BuscaClientePorOut {
+public class ClienteAdapter implements BuscaClientePortOut {
 
     private final EQ3Client client;
     private final StsTokenImpl stsTokenClient;

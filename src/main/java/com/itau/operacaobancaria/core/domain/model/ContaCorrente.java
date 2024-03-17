@@ -67,25 +67,25 @@ public class ContaCorrente {
             this.setValorLimiteDiario(this.getValorLimiteDiarioAjustado());
         }
     }
-    public void validarLimites(BigDecimal valorTransferencia, Transferencia transferencia) {
-        if (this.getSaldoContaCorrente().compareTo(valorTransferencia) < 0) {
+    public void validarLimites(Transferencia transferencia) {
+        if (this.getSaldoContaCorrente().compareTo(transferencia.getValorTransferencia()) < 0) {
             log.error("Conta sem saldo para realizar transferência. idCliente: {}", this.getIdCliente());
             throw new SaldoInsuficienteException("Conta sem saldo para realizar transferência.");
         }
         if (this.getValorLimiteDiario().compareTo(
-                valorTransferencia) < 0) {
+                transferencia.getValorTransferencia()) < 0) {
             log.error("Limite diário atingido para realizar transferência. idCliente: {}", this.getIdCliente());
             throw new LimiteDiarioInsuficienteException("Limite diário atingido para realizar transferência.");
         }
-        debitarValorTransferencia(valorTransferencia, transferencia);
+        debitarValorTransferencia(transferencia);
     }
 
-    private void debitarValorTransferencia(BigDecimal valorTransferencia, Transferencia transferencia) {
+    private void debitarValorTransferencia(Transferencia transferencia) {
         this.setSaldoContaCorrente(this.getSaldoContaCorrente()
-                .subtract(valorTransferencia));
+                .subtract(transferencia.getValorTransferencia()));
 
         this.setValorLimiteDiario(this.getValorLimiteDiario()
-                .subtract(valorTransferencia));
+                .subtract(transferencia.getValorTransferencia()));
 
         this.setDataUltimaTransferencia(LocalDate.now());
         transferencia.setDataHoraTransferencia(LocalDateTime.now().toString());
